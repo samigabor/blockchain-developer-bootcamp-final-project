@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity 0.8.9;
+pragma solidity >=0.5.0 <0.9.0;
 
 contract Anonymizer {
     /**
@@ -21,7 +21,9 @@ contract Anonymizer {
     /**
      * @dev initialize contract owner
      */
-    constructor() {}
+    constructor() public {
+        owner = msg.sender;
+    }
 
     /**
      * @notice Returns the ether balance available inside the contract
