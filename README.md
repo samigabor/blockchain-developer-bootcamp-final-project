@@ -55,3 +55,15 @@ User funds are sent to a smart contract and the smart contract makes another tra
 ## Env setup
 
 `truffle unbox react`
+`truffle compile`
+start Ganache UI on port 7545 and load current truffle-config.js
+`truffle migrate` -> on success 'account' is the same as the first ganache account
+`cd client`
+`npm run start`
+add new `Custom RPC` network into MetaMask using the ganache RPC Server and port 1337
+`Import Account` into MetaMask using the private key for the first ganache account
+`Connect` newly added MetaMask account to site
+
+TBD:
+
+- why it works with port 8545 in getWeb3.js and truffle-config.js
