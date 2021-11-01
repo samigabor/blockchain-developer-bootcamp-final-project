@@ -51,3 +51,7 @@ User funds are sent to a smart contract and the smart contract makes another tra
 - implement emergency stop
 - implement upgradable contract
 - optimize gas usage
+
+## Env setup
+
+`truffle unbox react`
