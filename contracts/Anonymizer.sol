@@ -19,6 +19,13 @@ contract Anonymizer {
     mapping(address => uint256) private balances;
 
     /**
+     * @dev events:
+     * @param balance the updated eth balance for current user
+     **/
+    event EthDeposit(uint256 indexed balance);
+    event EthWithdraw(uint256 indexed balance);
+
+    /**
      * @dev initialize contract owner
      */
     constructor() public {
@@ -29,7 +36,40 @@ contract Anonymizer {
      * @notice Returns the ether balance available inside the contract
      * @return user's contract balance
      **/
-    function getBalance() public view returns (uint256) {}
+    function getBalance(address _addr) public view returns (uint256) {
+        return balances[_addr];
+    }
+
+    /**
+     * @dev increase the user's contract balance
+     * @return user's updated balance
+     **/
+    function depositEth() public payable returns (uint256) {
+        balances[msg.sender] += msg.value;
+        emit EthDeposit(balances[msg.sender]);
+        return balances[msg.sender];
+    }
+
+    /**
+     * @dev decrease the user's contract balance
+     * @return user's updated balance
+     **/
+    function withdrawEth(address payable _to, uint256 _amount)
+        public
+        returns (uint256)
+    {
+        require(balances[msg.sender] >= _amount, "Insufficient funds.");
+
+        // the recommanded way to send ether after December 2019(but errors out, probably due to solidity version)
+        // (bool sent, ) = _to.call{value: _amount}("");
+        // require(sent, "Failed to send Ether");
+
+        balances[msg.sender] -= _amount;
+        _to.transfer(_amount);
+        // require(sent, "Failed to send Ether");
+        emit EthWithdraw(balances[msg.sender]);
+        return balances[msg.sender];
+    }
 
     /**
      * @notice Send ether to an address(including yourself)
