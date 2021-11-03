@@ -1,0 +1,24 @@
+{
+  "files": {
+    "main.css": "/blockchain-developer-bootcamp-final-project/static/css/main.b9606c73.chunk.css",
+    "main.js": "/blockchain-developer-bootcamp-final-project/static/js/main.d1a39e7b.chunk.js",
+    "main.js.map": "/blockchain-developer-bootcamp-final-project/static/js/main.d1a39e7b.chunk.js.map",
+    "runtime-main.js": "/blockchain-developer-bootcamp-final-project/static/js/runtime-main.dca84915.js",
+    "runtime-main.js.map": "/blockchain-developer-bootcamp-final-project/static/js/runtime-main.dca84915.js.map",
+    "static/css/2.cdbe2572.chunk.css": "/blockchain-developer-bootcamp-final-project/static/css/2.cdbe2572.chunk.css",
+    "static/js/2.9e7afc11.chunk.js": "/blockchain-developer-bootcamp-final-project/static/js/2.9e7afc11.chunk.js",
+    "static/js/2.9e7afc11.chunk.js.map": "/blockchain-developer-bootcamp-final-project/static/js/2.9e7afc11.chunk.js.map",
+    "index.html": "/blockchain-developer-bootcamp-final-project/index.html",
+    "precache-manifest.67c01773b8d2473ba120319658684ae9.js": "/blockchain-developer-bootcamp-final-project/precache-manifest.67c01773b8d2473ba120319658684ae9.js",
+    "service-worker.js": "/blockchain-developer-bootcamp-final-project/service-worker.js",
+    "static/css/2.cdbe2572.chunk.css.map": "/blockchain-developer-bootcamp-final-project/static/css/2.cdbe2572.chunk.css.map",
+    "static/css/main.b9606c73.chunk.css.map": "/blockchain-developer-bootcamp-final-project/static/css/main.b9606c73.chunk.css.map"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.dca84915.js",
+    "static/css/2.cdbe2572.chunk.css",
+    "static/js/2.9e7afc11.chunk.js",
+    "static/css/main.b9606c73.chunk.css",
+    "static/js/main.d1a39e7b.chunk.js"
+  ]
+}
