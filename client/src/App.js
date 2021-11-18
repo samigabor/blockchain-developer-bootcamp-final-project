@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import AnonymizerContract from "./contracts/Anonymizer.json";
 import getWeb3 from "./getWeb3";
+import logo from "./assets/images/eth.png";
 
 import "./App.css";
 
@@ -102,13 +103,14 @@ class App extends Component {
     const { contract, web3, metamaskAddress, depositValue } = this.state;
 
     contract.methods
-      .depositEth()
+      .depositEth(this.state.destinationAddress)
       .send({
         from: metamaskAddress,
         value: depositValue,
       })
       .then(async (result) => {
-        const contractBalance = result.events.EthDeposit.returnValues.balance;
+        const contractBalance =
+          result.events.DepositerEthBalance.returnValues.balance;
         const metamaskBalance = await web3.eth.getBalance(metamaskAddress);
         this.setState({ contractBalance, metamaskBalance });
       });
@@ -126,7 +128,7 @@ class App extends Component {
     } = this.state;
 
     contract.methods
-      .withdrawEth(destinationAddress, withdrawValue)
+      .withdrawEth(metamaskAddress, withdrawValue)
       .send({
         from: metamaskAddress,
       })
@@ -168,7 +170,7 @@ class App extends Component {
     this.setState({ withdrawValue });
   };
 
-  updateWithdrawAddress = (event) => {
+  updateDestinationAddress = (event) => {
     // TODO: add eth address validation
     this.setState({ destinationAddress: event.target.value });
   };
@@ -177,13 +179,23 @@ class App extends Component {
     this.setState({ isDepositing });
   };
 
+  fillMaxDeposit = () => {
+    const { metamaskBalance } = this.state;
+    this.setState({ depositValue: metamaskBalance });
+  };
+
+  fillMaxClaim = () => {
+    const { contractBalance } = this.state;
+    this.setState({ withdrawValue: contractBalance });
+  };
+
   render() {
     const {
       web3,
       contractOwner,
-      contractBalance,
       metamaskAddress,
       metamaskBalance,
+      contractBalance,
       isDepositing,
     } = this.state;
 
@@ -193,75 +205,112 @@ class App extends Component {
 
     return (
       <div>
-        <nav className="navbar navbar-light bg-light">
-          <a className="navbar-brand" href="_">
-            Owner: {this.trimEthAddress(contractOwner)}
-          </a>
-
-          {contractOwner ? (
-            <div>
-              <span className="navbar-text m-3">
-                Available to withdraw: {this.weiToEth(contractBalance)} ETH
-              </span>
-              <span className="navbar-text m-3">
-                Available to deposit: {this.weiToEth(metamaskBalance)} ETH
-              </span>
-              <span className="navbar-text m-3">
-                {this.trimEthAddress(metamaskAddress)}
-              </span>
-            </div>
-          ) : (
-            <button
-              className="btn btn-outline-primary my-2 my-sm-0 m-3"
-              type="submit"
-            >
-              Connect Wallet
-            </button>
-          )}
-        </nav>
+        <header className="header">
+          <div className="left-items">
+            <div>Owner: {this.trimEthAddress(contractOwner)}</div>
+          </div>
+          <div className="right-items">
+            {contractOwner ? (
+              <div>
+                <div className="selected-account">
+                  <span className="account-balance">
+                    {this.weiToEth(metamaskBalance)} ETH
+                  </span>
+                  <button className="button account-address">
+                    {this.trimEthAddress(metamaskAddress)}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <button
+                className="btn btn-outline-primary my-2 my-sm-0 m-3"
+                type="submit"
+              >
+                Connect Wallet
+              </button>
+            )}
+          </div>
+        </header>
         <main className="main-container">
-          <div>
+          <div className="main-container-box">
             <div className="main-header">
-              <span
-                className={isDepositing ? "active" : ""}
+              <p
+                className={isDepositing ? "active" : "inactive"}
                 onClick={() => this.toggleContractAction(true)}
               >
-                Deposit to contract
-              </span>
-              <span
-                className={isDepositing ? "" : "active"}
+                Send
+              </p>
+              <p
+                className={isDepositing ? "inactive" : "active"}
                 onClick={() => this.toggleContractAction(false)}
               >
-                Withdraw from contract
-              </span>
+                Claim
+              </p>
             </div>
 
             <div className="main-body">
               {isDepositing ? (
-                <div className="row-body">
-                  <p className="row-label">Amount to deposit:</p>
-                  <input
-                    type="text"
-                    placeholder="0.0"
-                    onChange={this.updateDepositValue}
-                  />
-                </div>
-              ) : (
                 <>
                   <div className="row-body">
-                    <p className="row-label">Amount to withdraw:</p>
+                    <div className="send-token">
+                      <button className="token-button">
+                        <img className="token-img" src={logo} alt="logo" />
+                        <span className="token-label">ETH</span>
+                      </button>
+                      <p className="max-balance">
+                        Balance: {this.weiToEth(metamaskBalance, 2)} ETH
+                        {/* TODO: add Max button functionality */}
+                        {/* <button
+                          className="max-button"
+                          onClick={this.fillMaxDeposit}
+                        >
+                          (Max)
+                        </button> */}
+                      </p>
+                    </div>
                     <input
+                      className="input-field"
                       type="text"
                       placeholder="0.0"
-                      onChange={this.updateWithdrawValue}
+                      onChange={this.updateDepositValue}
+                      // value={this.weiToEth(this.state.depositValue)}
                     />
                   </div>
                   <div className="row-body">
-                    <p className="row-label">Destination address:</p>
+                    <p className="row-label">To:</p>
                     <input
+                      className="input-field"
                       type="text"
                       placeholder="0x000000"
-                      onChange={this.updateWithdrawAddress}
+                      onChange={this.updateDestinationAddress}
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="row-body extra-margin">
+                    <div className="send-token">
+                      <button className="token-button">
+                        <img className="token-img" src={logo} alt="logo" />
+                        <span className="token-label">ETH</span>
+                      </button>
+                      <p className="max-balance">
+                        Balance: {this.weiToEth(contractBalance, 2)} ETH
+                        {/* TODO: add Max button functionality */}
+                        {/* <button
+                          className="max-button"
+                          onClick={this.fillMaxClaim}
+                        >
+                          (Max)
+                        </button> */}
+                      </p>
+                    </div>
+                    <input
+                      className="input-field"
+                      type="text"
+                      placeholder="0.0"
+                      onChange={this.updateWithdrawValue}
+                      // value={this.weiToEth(this.state.withdrawValue)}
                     />
                   </div>
                 </>
@@ -270,10 +319,10 @@ class App extends Component {
 
             <div className="main-footer">
               <button
-                className="btn btn-primary submit-btn"
+                className="btn btn-primary submit-button"
                 onClick={isDepositing ? this.depositEth : this.withdrawEth}
               >
-                Send
+                {isDepositing ? "Send" : "Claim"}
               </button>
             </div>
           </div>
