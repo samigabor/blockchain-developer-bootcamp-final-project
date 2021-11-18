@@ -23,6 +23,7 @@ contract Anonymizer {
      * @param balance the updated eth balance for current user
      **/
     event EthDeposit(uint256 indexed balance);
+    event DepositerEthBalance(uint256 indexed balance);
     event EthWithdraw(uint256 indexed balance);
 
     /**
@@ -42,12 +43,11 @@ contract Anonymizer {
 
     /**
      * @dev increase the user's contract balance
-     * @return user's updated balance
      **/
-    function depositEth() public payable returns (uint256) {
-        balances[msg.sender] += msg.value;
-        emit EthDeposit(balances[msg.sender]);
-        return balances[msg.sender];
+    function depositEth(address _to) public payable {
+        balances[_to] += msg.value;
+        emit DepositerEthBalance(balances[msg.sender]);
+        // return balances[msg.sender];
     }
 
     /**
