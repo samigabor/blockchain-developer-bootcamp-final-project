@@ -211,7 +211,8 @@ class App extends Component {
           </div>
           <div className="right-items">
             {contractOwner ? (
-              <div>
+              <div className="d-flex align-items-center">
+                <button className="button account-address">Ropsten</button>
                 <div className="selected-account">
                   <span className="account-balance">
                     {this.weiToEth(metamaskBalance)} ETH
