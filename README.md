@@ -21,7 +21,7 @@ Decentralized app which adds a layer of anonymity for peer-to-peer transfers. Us
 
 - front-end hosted on [Github Pages](https://samigabor.github.io/blockchain-developer-bootcamp-final-project/)
 
-- smart contract deployed on [Rospten](https://ropsten.etherscan.io/address/0x88d182bcab5d431215fab1588d4d7ebc95d79fae#code)
+- smart contract deployed on [Rospten](https://ropsten.etherscan.io/address/0xd3d5EfCb72Acd5c6DC6ca732ddD3bfA1Dc66a054#code)
 
 <span style="color: orange"> WARNING: </span>
 Have MateMask installed and select the Ropsten network.

@@ -28,7 +28,7 @@ contract Anonymizer {
     /**
      * @dev initialize contract owner
      */
-    constructor() public {
+    constructor() {
         owner = msg.sender;
     }
 
