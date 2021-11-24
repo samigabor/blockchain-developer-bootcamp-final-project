@@ -15,6 +15,7 @@ class App extends Component {
     metamaskAddress: null,
     metamaskBalance: 0,
     depositValue: 0,
+    depositToMyselfValue: 0,
     isDepositing: true,
     withdrawValue: 0,
     destinationAddress: null,
@@ -100,32 +101,45 @@ class App extends Component {
   };
 
   depositEth = async () => {
-    const { contract, web3, metamaskAddress, depositValue } = this.state;
+    const {
+      contract,
+      web3,
+      metamaskAddress,
+      depositValue,
+      depositToMyselfValue,
+    } = this.state;
 
-    contract.methods
-      .depositEth(this.state.destinationAddress)
-      .send({
-        from: metamaskAddress,
-        value: depositValue,
-      })
-      .then(async (result) => {
-        const contractBalance =
-          result.events.DepositerEthBalance.returnValues.balance;
-        const metamaskBalance = await web3.eth.getBalance(metamaskAddress);
-        this.setState({ contractBalance, metamaskBalance });
-      });
+    depositToMyselfValue
+      ? contract.methods
+          .depositEth(this.state.destinationAddress, depositToMyselfValue)
+          .send({
+            from: metamaskAddress,
+            value: this.sumWeiValues(depositValue, depositToMyselfValue),
+          })
+          .then(async (result) => {
+            const contractBalance =
+              result.events.DepositerEthBalance.returnValues.balance;
+            const metamaskBalance = await web3.eth.getBalance(metamaskAddress);
+            this.setState({ contractBalance, metamaskBalance });
+          })
+      : contract.methods
+          .depositEth(this.state.destinationAddress)
+          .send({
+            from: metamaskAddress,
+            value: depositValue,
+          })
+          .then(async (result) => {
+            const contractBalance =
+              result.events.DepositerEthBalance.returnValues.balance;
+            const metamaskBalance = await web3.eth.getBalance(metamaskAddress);
+            this.setState({ contractBalance, metamaskBalance });
+          });
   };
 
   withdrawEth = async (e) => {
     e.preventDefault();
 
-    const {
-      contract,
-      web3,
-      metamaskAddress,
-      destinationAddress,
-      withdrawValue,
-    } = this.state;
+    const { contract, web3, metamaskAddress, withdrawValue } = this.state;
 
     contract.methods
       .withdrawEth(metamaskAddress, withdrawValue)
@@ -134,7 +148,7 @@ class App extends Component {
       })
       .on("transactionHash", (hash) => {
         console.log(
-          `View Transaction on Etherscan: https://etherscan.io/tx/${hash}`
+          `View Transaction on Ropsten Etherscan: https://ropsten.etherscan.io/tx/${hash}`
         );
       })
       .on("receipt", async (receipt) => {
@@ -160,9 +174,19 @@ class App extends Component {
       });
   };
 
+  sumWeiValues(value1, value2) {
+    const totalEth = this.weiToEth(value1) + this.weiToEth(value2);
+    return this.ethToWei(totalEth);
+  }
+
   updateDepositValue = (event) => {
     const depositValue = this.ethToWei(event.target.value);
     this.setState({ depositValue });
+  };
+
+  updateDepositToMyselfValue = (event) => {
+    const depositToMyselfValue = this.ethToWei(event.target.value);
+    this.setState({ depositToMyselfValue });
   };
 
   updateWithdrawValue = (event) => {
@@ -227,7 +251,7 @@ class App extends Component {
                 className="btn btn-outline-primary my-2 my-sm-0 m-3"
                 type="submit"
               >
-                Connect Wallet
+                Switch network to Ropsten
               </button>
             )}
           </div>
@@ -284,6 +308,15 @@ class App extends Component {
                       type="text"
                       placeholder="0x000000"
                       onChange={this.updateDestinationAddress}
+                    />
+                  </div>
+                  <div className="row-body">
+                    <p className="max-balance">Extra deposit (optional)</p>
+                    <input
+                      className="input-field"
+                      type="text"
+                      placeholder="0.0"
+                      onChange={this.updateDepositToMyselfValue}
                     />
                   </div>
                 </>
