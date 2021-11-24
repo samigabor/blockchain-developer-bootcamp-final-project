@@ -1,0 +1,26 @@
+{
+  "name": "anonymizer",
+  "version": "1.0.0",
+  "description": "Decentralized app which adds a layer of anonymity for peer-to-peer transfers. Useful for users who want to make a payment without exposing their entire transaction history.",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samigabor/blockchain-developer-bootcamp-final-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/samigabor/blockchain-developer-bootcamp-final-project/issues"
+  },
+  "homepage": "https://github.com/samigabor/blockchain-developer-bootcamp-final-project#readme",
+  "devDependencies": {
+    "@openzeppelin/contracts": "^4.3.3"
+  }
+}
