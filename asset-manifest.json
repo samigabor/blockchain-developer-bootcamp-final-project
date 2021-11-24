@@ -1,24 +1,24 @@
 {
   "files": {
-    "main.css": "/blockchain-developer-bootcamp-final-project/static/css/main.2cc095b5.chunk.css",
-    "main.js": "/blockchain-developer-bootcamp-final-project/static/js/main.fe8033b9.chunk.js",
-    "main.js.map": "/blockchain-developer-bootcamp-final-project/static/js/main.fe8033b9.chunk.js.map",
+    "main.css": "/blockchain-developer-bootcamp-final-project/static/css/main.dc82bac5.chunk.css",
+    "main.js": "/blockchain-developer-bootcamp-final-project/static/js/main.51321193.chunk.js",
+    "main.js.map": "/blockchain-developer-bootcamp-final-project/static/js/main.51321193.chunk.js.map",
     "runtime-main.js": "/blockchain-developer-bootcamp-final-project/static/js/runtime-main.dca84915.js",
     "runtime-main.js.map": "/blockchain-developer-bootcamp-final-project/static/js/runtime-main.dca84915.js.map",
     "static/css/2.cdbe2572.chunk.css": "/blockchain-developer-bootcamp-final-project/static/css/2.cdbe2572.chunk.css",
     "static/js/2.1c4ff662.chunk.js": "/blockchain-developer-bootcamp-final-project/static/js/2.1c4ff662.chunk.js",
     "static/js/2.1c4ff662.chunk.js.map": "/blockchain-developer-bootcamp-final-project/static/js/2.1c4ff662.chunk.js.map",
     "index.html": "/blockchain-developer-bootcamp-final-project/index.html",
-    "precache-manifest.6a28ea0eb439e95258e61a3b638090aa.js": "/blockchain-developer-bootcamp-final-project/precache-manifest.6a28ea0eb439e95258e61a3b638090aa.js",
+    "precache-manifest.61aa3ce32e687761aa99287ee6d2e33c.js": "/blockchain-developer-bootcamp-final-project/precache-manifest.61aa3ce32e687761aa99287ee6d2e33c.js",
     "service-worker.js": "/blockchain-developer-bootcamp-final-project/service-worker.js",
     "static/css/2.cdbe2572.chunk.css.map": "/blockchain-developer-bootcamp-final-project/static/css/2.cdbe2572.chunk.css.map",
-    "static/css/main.2cc095b5.chunk.css.map": "/blockchain-developer-bootcamp-final-project/static/css/main.2cc095b5.chunk.css.map"
+    "static/css/main.dc82bac5.chunk.css.map": "/blockchain-developer-bootcamp-final-project/static/css/main.dc82bac5.chunk.css.map"
   },
   "entrypoints": [
     "static/js/runtime-main.dca84915.js",
     "static/css/2.cdbe2572.chunk.css",
     "static/js/2.1c4ff662.chunk.js",
-    "static/css/main.2cc095b5.chunk.css",
-    "static/js/main.fe8033b9.chunk.js"
+    "static/css/main.dc82bac5.chunk.css",
+    "static/js/main.51321193.chunk.js"
   ]
 }
