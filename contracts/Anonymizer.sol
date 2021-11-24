@@ -1,5 +1,8 @@
 // SPDX-License-Identifier: MIT
 
+import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/security/Pausable.sol";
+
 pragma solidity ^0.8.0;
 
 /**
@@ -7,9 +10,7 @@ pragma solidity ^0.8.0;
  * @author Sami Gabor
  * @notice study project which may have security vulnerabilities
  */
-contract Anonymizer {
-    address public owner;
-
+contract Anonymizer is Ownable, Pausable {
     /**
      * @dev users balances:
      * The key is the user's address(hashed to increase privacy)
@@ -26,13 +27,6 @@ contract Anonymizer {
     event EthWithdraw(uint256 indexed balance);
 
     /**
-     * @dev initialize contract owner
-     */
-    constructor() {
-        owner = msg.sender;
-    }
-
-    /**
      * @notice Returns the ether balance available inside the contract
      * @return sender's contract balance
      **/
@@ -46,7 +40,7 @@ contract Anonymizer {
      * @dev emit the sender's current contract balance
      * @param _to the destination address to which the ether is assigned
      **/
-    function depositEth(address _to) public payable {
+    function depositEth(address _to) public payable whenNotPaused {
         balances[_to] += msg.value;
         emit DepositerEthBalance(balances[msg.sender]);
     }
@@ -60,7 +54,11 @@ contract Anonymizer {
      * @param _to the destination address to which the ether is added
      * @param _toMyselfAmount the amount assigned back to sender(inside the contract) in order to increase the anonymity
      **/
-    function depositEth(address _to, uint256 _toMyselfAmount) public payable {
+    function depositEth(address _to, uint256 _toMyselfAmount)
+        public
+        payable
+        whenNotPaused
+    {
         require(
             msg.value > _toMyselfAmount,
             "The total amount must be greather than the amount deposited back to sender"
@@ -82,5 +80,13 @@ contract Anonymizer {
         (bool sent, ) = _to.call{value: _amount}("");
         require(sent, "Failed to send Ether");
         emit EthWithdraw(balances[msg.sender]);
+    }
+
+    function freezeDeposits() external onlyOwner {
+        _pause();
+    }
+
+    function unfreezeDeposits() external onlyOwner {
+        _unpause();
     }
 }
