@@ -9249,10 +9249,95 @@
   },
   "networks": {
     "3": {
-      "events": {},
+      "events": {
+        "0xcc9129df0878bddaed2b37ad5a0b92883c12e5f15e3208c9c30cdf43e40688e6": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "balance",
+              "type": "uint256"
+            }
+          ],
+          "name": "DepositerEthBalance",
+          "type": "event"
+        },
+        "0x42209bf5ab128dd09fe8335ccb37e22361cc9a9ab81f1968216559bd85a595cc": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "balance",
+              "type": "uint256"
+            }
+          ],
+          "name": "EthDeposit",
+          "type": "event"
+        },
+        "0x5dfcd77c1d2e4b9f1f7875aef13b161e0756d81673a6c0707d78d8beef3dcf7b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "balance",
+              "type": "uint256"
+            }
+          ],
+          "name": "EthWithdraw",
+          "type": "event"
+        },
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
+        },
+        "0x62e78cea01bee320cd4e420270b5ea74000d11b0c9f74754ebdbfc544b05a258": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "name": "Paused",
+          "type": "event"
+        },
+        "0x5db9ee0a495bf2e6ff9c91a7834c1ba4fdd244a5e8aa4e537bd38aeae4b073aa": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "name": "Unpaused",
+          "type": "event"
+        }
+      },
       "links": {},
-      "address": "0xd3d5EfCb72Acd5c6DC6ca732ddD3bfA1Dc66a054",
-      "transactionHash": "0x09de60f85ab175e577d2388a6a18950bc58400a6f037de84cd5ccc35cff03533"
+      "address": "0xca21A2DD5689313390F0160c05079f822573109C",
+      "transactionHash": "0xa98f6035ce0d2a11923f0d85f5893d1b136ed69313a750c7a69f15737980bcfe"
     },
     "5777": {
       "events": {},
@@ -9418,7 +9503,7 @@
     }
   },
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-11-24T13:55:32.772Z",
+  "updatedAt": "2021-11-24T14:13:50.591Z",
   "networkType": "ethereum",
   "devdoc": {
     "author": "Sami Gabor",
