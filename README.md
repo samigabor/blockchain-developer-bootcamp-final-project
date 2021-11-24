@@ -1,69 +1,106 @@
-# blockchain-developer-bootcamp-final-project
+# Anonymizer
 
-Descentralized protocol which adds an extra layer of anonymity for transfers within the ethereum space. Useful for users who wants to make a payment but don't want to expose their entire transaction history.
+## Project Description
 
-Other alternatives(better anonymity but less convenient) to achive this:
+Decentralized app which adds a layer of anonymity for peer-to-peer transfers. Useful for users who want to make a payment without exposing their entire transaction history.
 
-1. send funds through/from a centralised exchange
-2. use a mixer/tumbler
+---
 
-## General Layout
+## Simple workflow
 
-### Header items:
+- Let's imagine Alice wants to send ETH to Bob. In order to do that Alice knows Bos's public address.
 
-- `user's network`
-- `user's address`
-- `user's contract balance`
-- `user's MetaMask balance`
+- Alice goes to the _Send_ tab and types Bob's public address and the amount to send. Optionally, Alice can add an extra amount and make it even harder for Bob to track the transaction back to her since the amounts transacted are now different. Any extra amounts added by Alice can be claimed at any time. Clicks **Send** button and MetaMask will open to confirm the transaction.
+- Bob goes to the _Claim_ tab and will see the amount sent by Alice(plus any other amount he already had there, if any). Clicks **Claim** button and MetaMask will open to confirm the transaction.
+- Now if Bob tries to analize EtherScan to see Alice's assets and transaction history, he will see the funds came from a contract.
+- Some guesses are still possible using the amount and the time the transaction was sent if analizing the contract history.
 
-### Main container items:
+---
 
-- `input field 1` - destination address
-- `input field 2` - amount to send to destination address
-- `input field 3` - amount to deposit into contract
-- `Send` button
+## How to access the deployed project:
 
-## User workflow
+- front-end hosted on [Github Pages](https://samigabor.github.io/blockchain-developer-bootcamp-final-project/)
 
-- auto-detect user wallet(MetaMask). For first-time users prompt to connect the wallet. Add fallback button to connect the wallet manually
-- auto-detect user network and prompt user to change it if necessary
-- user types the destination address, the amount to send and optionally the Deposit To Contract amount
-- if sending to own address the funds are deposited into the contract(increases privacy but also the risk - the contract becomes a honey pot) and destination address field becomes disabled
-- on Send button click MetaMask opens to confirm the transaction. The ETH amount(send + deposit) is pre-filled into MetaMask
-- display loading spinner while the transaction is pendings
-- once the transaction is finalized on the blockchain, remove loading spinner and displpay success/failed transaction message(self-closing toastr in the upper-right corner)
+- smart contract deployed on [Rospten](https://ropsten.etherscan.io/address/0x88d182bcab5d431215fab1588d4d7ebc95d79fae#code)
 
-## How it works
+<span style="color: orange"> WARNING: </span>
+Have MateMask installed and select the Ropsten network.
+If a different network is selected, then change it to Ropsten and refresh the page. Any time the account is changed, a page refresh is needed.
 
-User funds are sent to a smart contract and the smart contract makes another transaction to the receiver. The more funds the contract has, the better the anonymity is
+---
 
-## Nice-To-Have features:
+## Directory Structure
 
-- theme light/dark
-- etherscan redirect while the transaction is pending
-- a toggle Deposit To Contract button which pre-fills the destination address with own address and disables destination address and amount to send(remains active amount to deposit). The reverse is valid as well: if own address is typed, the Deposit To Contract button is toggled ON and destination address and amount to send are disabled.
-- accept ENS domain format
+The structure was generated running `truffle unbox react` and contains:
 
-## Technical Challenges:
+- `client`: contains the front-end built with React
+- `contracts`: contains the smart contract deployed to Ropsten
+- `migrations`: contains the migration files for deploying the contracts from the **contracts** directory
+- `test`: contins the test files for smart contracts
 
-- save(interact with) a hash of the user's address on the contract/blockchain to increase user privacy
-- receive and send ether within the same block vs. receive ether into the contract in one block and send ether from the contract in a following block
-- implement emergency stop
-- implement upgradable contract
+---
+
+## How to run the project locally:
+
+### Prerequisites:
+
+- node v16
+- npm v8
+- truffle v5
+- ganache-cli v6
+
+### Migrate the smart contracts
+
+- `npm install` - install the smart contract dependencies at root level
+- `ganache-cli -p 8545` - start a local ethereum blockchain and simulate full client behavior
+- `truffle compile` - compile smart contracts
+- `truffle migrate` - migrate the smart contracts locally (_--network development_ is optional)
+
+### Start the front-end
+
+- `cd client` - go to the client directory
+- `npm install` - install client dependencies
+- `npm run start` - run the application locally
+- go to `http://localhost:3000` (if not automatically redirected)
+
+### Run smart contract tests
+
+- `truffle test` at project root level
+
+### Add localhost into MetaMask (Custom RPC network):
+
+- `Network Name`: Localhost 8545
+- `New RPC URL`: http://localhost:8545
+- `Chain ID`: 1337
+- `Currency Symbol (optional)`: ETH
+
+### Import ganache-cli generated accounts into MetaMask:
+
+- Under `Import Accounts` paste the private key generated by `ganache-cli`
+
+---
+
+## Screencast walking through the project
+
+TODO
+
+---
+
+## Public Ethereum account for certification NFT:
+
+`0x1C2b35F78987953519224B313960c086722BD9E4`
+
+---
+
+## TODO features:
+
+- implement emergency stop functionality
+- implement upgradable contract functionality
 - optimize gas usage
-
-## Env setup
-
-`truffle unbox react`
-`truffle compile`
-start Ganache UI on port 7545 and load current truffle-config.js
-`truffle migrate` -> on success 'account' is the same as the first ganache account
-`cd client`
-`npm run start`
-add new `Custom RPC` network into MetaMask using the ganache RPC Server and port 1337
-`Import Account` into MetaMask using the private key for the first ganache account
-`Connect` newly added MetaMask account to site
-
-TBD:
-
-- why it works with port 8545 in getWeb3.js and truffle-config.js
+- display loading spinner while the transaction is pending
+- etherscan redirect while the transaction is pending
+- once the transaction is finalized on the blockchain, remove loading spinner and displpay success/failed transaction message(self-closing toastr in the upper-right corner)
+- automate the 2 spteps proccess (Send/Claim) into a single action made by sender.
+- save(interact with) a hash of the user's address on the contract to avoid saving users' addresses onto the blockchain
+- accept/display ENS domain names
+- implement a light/dark theme
