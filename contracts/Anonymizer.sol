@@ -3,7 +3,7 @@
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 
-pragma solidity ^0.8.0;
+pragma solidity 0.8.10;
 
 /**
  * @title App through which a layer of anonymity is added to peer-to-peer transactions
@@ -82,10 +82,16 @@ contract Anonymizer is Ownable, Pausable {
         emit EthWithdraw(balances[msg.sender]);
     }
 
+    /**
+     * @notice Pause deposits into the contract
+     **/
     function freezeDeposits() external onlyOwner {
         _pause();
     }
 
+    /**
+     * @notice Resume deposits into the contract
+     **/
     function unfreezeDeposits() external onlyOwner {
         _unpause();
     }
