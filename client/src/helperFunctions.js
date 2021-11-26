@@ -15,7 +15,7 @@ export function ethToWei(value, web3) {
 
 export function sumWeiValues(value1, value2, web3, decimals = 4) {
   const totalEth = weiToEth(value1, web3) + weiToEth(value2, web3, decimals);
-  return ethToWei(totalEth);
+  return ethToWei(totalEth, web3);
 }
 
 export function weiToEth(value, web3, decimals = 4) {
