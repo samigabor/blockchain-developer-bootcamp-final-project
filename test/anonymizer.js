@@ -22,6 +22,22 @@ contract("Anonymizer", (accounts) => {
     });
   });
 
+  describe("onlyOwner modifier", () => {
+    it("should allow the owner to freeze deposits", async () => {
+      await instance.freezeDeposits({ from: accountOne });
+    });
+
+    it("should NOT allow other users to freeze deposits", async () => {
+      try {
+        await instance.freezeDeposits({ from: accountTwo });
+      } catch (error) {
+        if (!error) {
+          throw "caller is not allowed to freeze deposits";
+        }
+      }
+    });
+  });
+
   describe("getBalance(_addr)", () => {
     it("should have an initial balance of zero for the first account", async () => {
       const result = await instance.getBalance(accountOne);
