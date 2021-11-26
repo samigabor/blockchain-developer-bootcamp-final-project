@@ -34,6 +34,20 @@ contract("Anonymizer", (accounts) => {
   });
 
   describe("depositEth(_addr)", () => {
+    it("shoult deposit one ether", async () => {
+      const oneEther = 10 ** 18;
+      await instance.methods["depositEth(address)"](secondAccount, {
+        from: firstAccount,
+        value: oneEther,
+      });
+
+      assert.equal(
+        await instance.getBalance(secondAccount),
+        oneEther,
+        "the balance is not one ether"
+      );
+    });
+
     it("should emit a DepositerEthBalance event", async () => {
       let eventEmitted = false;
       const tx = await instance.depositEth(secondAccount);
@@ -44,6 +58,26 @@ contract("Anonymizer", (accounts) => {
         eventEmitted,
         true,
         "making a deposit should emit a DepositerEthBalance event"
+      );
+    });
+  });
+
+  describe("depositEth(_addr, _amountToMyself)", () => {
+    it("shoult deposit one gwei", async () => {
+      const oneGwei = 10 ** 9; // use BigIng for testing ETH values
+      await instance.methods["depositEth(address,uint256)"](
+        secondAccount,
+        oneGwei,
+        {
+          from: firstAccount,
+          value: 3 * oneGwei,
+        }
+      );
+
+      assert.equal(
+        await instance.getBalance(secondAccount),
+        2 * oneGwei,
+        "the balance is not one gwei"
       );
     });
   });
