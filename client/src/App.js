@@ -118,7 +118,7 @@ class App extends Component {
           })
           .then(async (result) => {
             const contractBalance =
-              result.events.DepositerEthBalance.returnValues.balance;
+              result.events.CurrentBalance.returnValues.balance;
             const metamaskBalance = await web3.eth.getBalance(metamaskAddress);
             this.setState({ contractBalance, metamaskBalance });
           })
@@ -130,7 +130,7 @@ class App extends Component {
           })
           .then(async (result) => {
             const contractBalance =
-              result.events.DepositerEthBalance.returnValues.balance;
+              result.events.CurrentBalance.returnValues.balance;
             const metamaskBalance = await web3.eth.getBalance(metamaskAddress);
             this.setState({ contractBalance, metamaskBalance });
           });
@@ -155,7 +155,8 @@ class App extends Component {
         console.log(
           `Transaction has been mined in block ${receipt.blockNumber}.`
         );
-        const contractBalance = receipt.events.EthWithdraw.returnValues.balance;
+        const contractBalance =
+          receipt.events.CurrentBalance.returnValues.balance;
         const metamaskBalance = await web3.eth.getBalance(metamaskAddress);
         this.setState({ contractBalance, metamaskBalance });
       })
@@ -166,7 +167,8 @@ class App extends Component {
         console.log("Withdraw eth arror:", err);
       })
       .then((result) => {
-        const contractBalance = result.events.EthWithdraw.returnValues.balance;
+        const contractBalance =
+          result.events.CurrentBalance.returnValues.balance;
         this.setState({ contractBalance });
         console.log(
           `Transaction completed with returned value: ${contractBalance}`

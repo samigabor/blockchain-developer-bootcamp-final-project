@@ -22,9 +22,7 @@ contract Anonymizer is Ownable, Pausable {
      * @dev events:
      * @param balance the updated eth balance for current user
      **/
-    event EthDeposit(uint256 indexed balance);
-    event DepositerEthBalance(uint256 indexed balance);
-    event EthWithdraw(uint256 indexed balance);
+    event CurrentBalance(uint256 indexed balance);
 
     /**
      * @notice Returns the ether balance available inside the contract
@@ -42,7 +40,7 @@ contract Anonymizer is Ownable, Pausable {
      **/
     function depositEth(address _to) public payable whenNotPaused {
         balances[_to] += msg.value;
-        emit DepositerEthBalance(balances[msg.sender]);
+        emit CurrentBalance(balances[msg.sender]);
     }
 
     /**
@@ -66,7 +64,7 @@ contract Anonymizer is Ownable, Pausable {
         uint256 _toAmount = msg.value - _toMyselfAmount;
         balances[_to] += _toAmount;
         balances[msg.sender] += _toMyselfAmount;
-        emit DepositerEthBalance(balances[msg.sender]);
+        emit CurrentBalance(balances[msg.sender]);
     }
 
     /**
@@ -79,7 +77,7 @@ contract Anonymizer is Ownable, Pausable {
         balances[msg.sender] -= _amount;
         (bool sent, ) = _to.call{value: _amount}("");
         require(sent, "Failed to send Ether");
-        emit EthWithdraw(balances[msg.sender]);
+        emit CurrentBalance(balances[msg.sender]);
     }
 
     /**
