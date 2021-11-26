@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import AnonymizerContract from "./contracts/Anonymizer.json";
 import getWeb3 from "./getWeb3";
 import logo from "./assets/images/eth.png";
+import Header from "./components/Header";
+import { ethToWei, weiToEth, sumWeiValues } from "./helperFunctions";
 
 import "./App.css";
 
@@ -73,33 +75,6 @@ class App extends Component {
     this.setState({ contractOwner, contractBalance });
   };
 
-  trimEthAddress = (addr) => {
-    if (!addr) {
-      return "";
-    }
-    return `${addr.toString().slice(0, 6)}...${addr.toString().slice(38)}`;
-  };
-
-  ethToWei = (value) => {
-    const { web3 } = this.state;
-    const valueString = `${+value}`;
-    if (isNaN(valueString)) {
-      return 0;
-    }
-    return web3.utils.toWei(valueString);
-  };
-
-  weiToEth = (value, decimals = 4) => {
-    const { web3 } = this.state;
-    const valueString = `${+value}`;
-    if (isNaN(valueString)) {
-      return 0;
-    }
-    const ethValue = web3.utils.fromWei(valueString);
-    const decimalsValue = 10 ** decimals;
-    return Math.round(ethValue * decimalsValue) / decimalsValue;
-  };
-
   depositEth = async () => {
     const {
       contract,
@@ -114,7 +89,7 @@ class App extends Component {
           .depositEth(this.state.destinationAddress, depositToMyselfValue)
           .send({
             from: metamaskAddress,
-            value: this.sumWeiValues(depositValue, depositToMyselfValue),
+            value: sumWeiValues(depositValue, depositToMyselfValue, web3),
           })
           .then(async (result) => {
             const contractBalance =
@@ -176,23 +151,18 @@ class App extends Component {
       });
   };
 
-  sumWeiValues(value1, value2) {
-    const totalEth = this.weiToEth(value1) + this.weiToEth(value2);
-    return this.ethToWei(totalEth);
-  }
-
   updateDepositValue = (event) => {
-    const depositValue = this.ethToWei(event.target.value);
+    const depositValue = ethToWei(event.target.value, this.state.web3);
     this.setState({ depositValue });
   };
 
   updateDepositToMyselfValue = (event) => {
-    const depositToMyselfValue = this.ethToWei(event.target.value);
+    const depositToMyselfValue = ethToWei(event.target.value, this.state.web3);
     this.setState({ depositToMyselfValue });
   };
 
   updateWithdrawValue = (event) => {
-    const withdrawValue = this.ethToWei(event.target.value);
+    const withdrawValue = ethToWei(event.target.value, this.state.web3);
     this.setState({ withdrawValue });
   };
 
@@ -231,33 +201,12 @@ class App extends Component {
 
     return (
       <div>
-        <header className="header">
-          <div className="left-items">
-            <div>Owner: {this.trimEthAddress(contractOwner)}</div>
-          </div>
-          <div className="right-items">
-            {contractOwner ? (
-              <div className="d-flex align-items-center">
-                <button className="button account-address">Ropsten</button>
-                <div className="selected-account">
-                  <span className="account-balance">
-                    {this.weiToEth(metamaskBalance)} ETH
-                  </span>
-                  <button className="button account-address">
-                    {this.trimEthAddress(metamaskAddress)}
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <button
-                className="btn btn-outline-primary my-2 my-sm-0 m-3"
-                type="submit"
-              >
-                Switch network to Ropsten
-              </button>
-            )}
-          </div>
-        </header>
+        <Header
+          contractOwner={contractOwner}
+          metamaskAddress={metamaskAddress}
+          metamaskBalance={metamaskBalance}
+          web3={web3}
+        />
         <main className="main-container">
           <div className="main-container-box">
             <div className="main-header">
@@ -265,7 +214,7 @@ class App extends Component {
                 className={isDepositing ? "active" : "inactive"}
                 onClick={() => this.toggleContractAction(true)}
               >
-                Send
+                Send...
               </p>
               <p
                 className={isDepositing ? "inactive" : "active"}
@@ -285,7 +234,7 @@ class App extends Component {
                         <span className="token-label">ETH</span>
                       </button>
                       <p className="max-balance">
-                        Balance: {this.weiToEth(metamaskBalance, 2)} ETH
+                        Balance: {weiToEth(metamaskBalance, web3, 2)} ETH
                         {/* TODO: add Max button functionality */}
                         {/* <button
                           className="max-button"
@@ -331,7 +280,7 @@ class App extends Component {
                         <span className="token-label">ETH</span>
                       </button>
                       <p className="max-balance">
-                        Balance: {this.weiToEth(contractBalance, 2)} ETH
+                        Balance: {weiToEth(contractBalance, web3, 2)} ETH
                         {/* TODO: add Max button functionality */}
                         {/* <button
                           className="max-button"

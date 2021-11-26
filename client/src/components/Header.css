@@ -1,0 +1,30 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.selected-account {
+  background: rgba(78, 82, 154, 0.9) -23.32%;
+  border-radius: 10px;
+  border: none;
+  margin: 16px;
+}
+
+.account-balance {
+  color: white;
+  margin: 14px;
+}
+
+.account-address {
+  background: rgba(140, 141, 252, 0.9) 93.86%;
+  color: white;
+}
+
+.button {
+  border-radius: 10px;
+  border: none;
+  padding-left: 16px;
+  padding-right: 16px;
+  height: 38px;
+  margin: 0;
+}
