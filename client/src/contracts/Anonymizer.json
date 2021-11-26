@@ -9615,11 +9615,24 @@
           ],
           "name": "Unpaused",
           "type": "event"
+        },
+        "0xccd63b477c883a586271d6c5e65e8a82327bddc52ed1908a1078708f8c5c101a": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "uint256",
+              "name": "balance",
+              "type": "uint256"
+            }
+          ],
+          "name": "CurrentBalance",
+          "type": "event"
         }
       },
       "links": {},
-      "address": "0x9fA5bAd61321C783ccD3f10409743665F4A407dD",
-      "transactionHash": "0xc7cc33fd8f1b3054995f735394e48a630542bc990ae2f9867d4840dfa069f3f1"
+      "address": "0xea4A6DdEd2F7341965B62E1dFe0481Dc3BD1a310",
+      "transactionHash": "0x89925670e5035a1d88b5665f7165edea3f32b6b51ce651114ad5f433a8c67d68"
     },
     "5777": {
       "events": {},
@@ -9845,12 +9858,12 @@
         }
       },
       "links": {},
-      "address": "0x1A9eFba3bDC71f0084e72fC1571976992967de2D",
-      "transactionHash": "0x196257c6b4e099bd4b1291b5f05b8c45b7a1a98c3db5ea0defc6411a20db1987"
+      "address": "0x33bE9b778688B37eA325C0c83E5D72ba40736bC9",
+      "transactionHash": "0x95735af9c152e0cf95638214cddfd2a679f6cc2361871632b10acdc8ea9c9dbf"
     }
   },
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-11-26T09:50:32.456Z",
+  "updatedAt": "2021-11-26T14:48:39.209Z",
   "networkType": "ethereum",
   "devdoc": {
     "author": "Sami Gabor",

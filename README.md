@@ -21,7 +21,7 @@ Decentralized app which adds a layer of anonymity for peer-to-peer transfers. Us
 
 - front-end hosted on [Github Pages](https://samigabor.github.io/blockchain-developer-bootcamp-final-project/)
 
-- smart contract deployed on [Rospten](https://ropsten.etherscan.io/address/0x9fA5bAd61321C783ccD3f10409743665F4A407dD#code)
+- smart contract deployed on [Rospten](https://ropsten.etherscan.io/address/0xea4A6DdEd2F7341965B62E1dFe0481Dc3BD1a310#code)
 
 <span style="color: orange"> WARNING: </span>
 Have MateMask installed and select the Ropsten network.
@@ -99,6 +99,8 @@ TODO
 
 ## TODO features:
 
+- refactor UI using react hooks
+- better integration with MetaMask. Update UI automatically update on MetaMask actions(account/netowork changes). As of now, after changing account/network on MetaMask a page refresh is needed
 - implement emergency stop functionality
 - implement upgradable contract functionality
 - optimize gas usage
