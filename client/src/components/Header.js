@@ -1,5 +1,5 @@
 import React from "react";
-import { trimEthAddress, weiToEth } from "../helperFunctions";
+import { trimEthAddress, weiToEth } from "../helpers/eth-conversions";
 import getNetwork from "../helpers/networks";
 import "./Header.css";
 

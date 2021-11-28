@@ -5,7 +5,7 @@ import Header from "./components/Header";
 import Message from "./components/Message";
 import logo from "./assets/images/eth.png";
 import getNetwork from "./helpers/networks";
-import { ethToWei, weiToEth, sumWeiValues } from "./helperFunctions";
+import { ethToWei, weiToEth, sumWeiValues } from "./helpers/eth-conversions";
 
 import "./App.css";
 
@@ -288,7 +288,7 @@ class App extends Component {
                 className={isDepositing ? "active" : "inactive"}
                 onClick={() => this.toggleContractAction(true)}
               >
-                Send...
+                Send
               </p>
               <p
                 className={isDepositing ? "inactive" : "active"}
