@@ -23,10 +23,6 @@ Decentralized app which adds a layer of anonymity for peer-to-peer transfers. Us
 
 - smart contract deployed on [Rospten](https://ropsten.etherscan.io/address/0xea4A6DdEd2F7341965B62E1dFe0481Dc3BD1a310#code)
 
-<span style="color: orange"> WARNING: </span>
-Have MateMask installed and select the Ropsten network.
-If a different network is selected, then change it to Ropsten and refresh the page. Any time the account is changed, a page refresh is needed.
-
 ---
 
 ## Directory Structure
@@ -48,6 +44,7 @@ The structure was generated running `truffle unbox react` and contains:
 - npm v8
 - truffle v5
 - ganache-cli v6
+- MetaMask wallet
 
 ### Download the project:
 
@@ -100,15 +97,12 @@ TODO
 
 ## TODO features:
 
-- display error/success messages on front-end
 - refactor UI using react hooks
 - implement emergency stop functionality
 - implement upgradable contract functionality
 - optimize gas usage
-- display loading spinner while the transaction is pending
-- etherscan redirect while the transaction is pending
-- once the transaction is finalized on the blockchain, remove loading spinner and displpay success/failed transaction message(self-closing toastr in the upper-right corner)
 - automate the 2 spteps proccess (Send/Claim) into a single action made by sender.
 - save(interact with) a hash of the user's address on the contract to avoid saving users' addresses onto the blockchain
 - accept/display ENS domain names
 - implement a light/dark theme
+- deploy to Mainnet/Layer 2
