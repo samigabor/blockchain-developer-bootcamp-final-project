@@ -1,7 +1,7 @@
 import React from "react";
 import "./Message.css";
 
-export default function Message({ title, variant, link = "" }) {
+export default function Message({ title, variant, link }) {
   if (!title) {
     return null;
   }
@@ -14,9 +14,10 @@ export default function Message({ title, variant, link = "" }) {
           {link ? (
             <span>
               View details{" "}
-              <a href={link} className="link" target="_blank">
+              <a href={link} target="_blank">
                 here
               </a>
+              .
             </span>
           ) : (
             <></>

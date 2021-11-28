@@ -102,20 +102,6 @@ class App extends Component {
     });
   };
 
-  handleConfirmation = (confirmationNumber, receipt) => {
-    const etherscanLink = `https://${getNetwork(
-      this.state.networkId
-    )}.etherscan.io/tx/${receipt.transactionHash}`;
-    this.setState({
-      message: {
-        title: `Confirmed(${confirmationNumber}).`,
-        variant: "success",
-        link: etherscanLink,
-      },
-    });
-    this.clearMessageWithDelay();
-  };
-
   handleError = () => {
     this.setState({
       message: {
@@ -192,9 +178,7 @@ class App extends Component {
             value: sumWeiValues(depositValue, depositToMyselfValue, web3),
           })
           .on("transactionHash", (hash) => this.handleTransactionHash(hash))
-          .on("confirmation", (confirmationNumber, receipt) =>
-            this.handleConfirmation(confirmationNumber, receipt)
-          )
+          .on("receipt", (receipt) => this.handleReceipt(receipt))
           .on("error", (err) => this.handleError(err))
           .then((result) => this.handlePromise(result))
       : contract.methods
@@ -204,9 +188,7 @@ class App extends Component {
             value: depositValue,
           })
           .on("transactionHash", (hash) => this.handleTransactionHash(hash))
-          .on("confirmation", (confirmationNumber, receipt) =>
-            this.handleConfirmation(confirmationNumber, receipt)
-          )
+          .on("receipt", (receipt) => this.handleReceipt(receipt))
           .on("error", (err) => this.handleError(err))
           .then((result) => this.handlePromise(result));
   };
@@ -226,9 +208,6 @@ class App extends Component {
       })
       .on("transactionHash", (hash) => this.handleTransactionHash(hash))
       .on("receipt", (receipt) => this.handleReceipt(receipt))
-      .on("confirmation", (confirmationNumber, receipt) =>
-        this.handleConfirmation(confirmationNumber, receipt)
-      )
       .on("error", (err) => this.handleError(err))
       .then((result) => this.handlePromise(result));
   };
