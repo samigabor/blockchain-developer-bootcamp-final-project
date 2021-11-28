@@ -10,6 +10,14 @@ const getWeb3 = () =>
         try {
           // Request account access if needed
           await window.ethereum.enable();
+          // Subscribe to MetaMask actions
+          await window.ethereum.on("accountsChanged", (accounts) =>
+            window.location.reload()
+          );
+
+          window.ethereum.on("chainChanged", (chainId) =>
+            window.location.reload()
+          );
           // Accounts now exposed
           resolve(web3);
         } catch (error) {
