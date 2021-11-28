@@ -27,6 +27,7 @@ class App extends Component {
     message: {
       title: "",
       variant: "success",
+      link: "",
     },
   };
 
@@ -63,16 +64,95 @@ class App extends Component {
       );
     } catch (error) {
       // Catch any errors for any of the above operations.
-      alert(
+      console.error(
         `Failed to load web3, accounts, or contract. Check console for details.`
       );
       console.error(error);
     }
   };
 
+  handleTransactionHash = (hash) => {
+    const etherscanLink = `https://${getNetwork(
+      this.state.networkId
+    )}.etherscan.io/tx/${hash}`;
+    this.setState({
+      message: {
+        title: `Pending.`,
+        variant: "success",
+        link: etherscanLink,
+      },
+    });
+  };
+
+  handleReceipt = async (receipt) => {
+    const { web3, metamaskAddress, networkId } = this.state;
+    const contractBalance = receipt.events.CurrentBalance.returnValues.balance;
+    const metamaskBalance = await web3.eth.getBalance(metamaskAddress);
+    const etherscanLink = `https://${getNetwork(networkId)}.etherscan.io/tx/${
+      receipt.transactionHash
+    }`;
+    this.setState({
+      contractBalance,
+      metamaskBalance,
+      message: {
+        title: `Transaction has been mined in block ${receipt.blockNumber}.`,
+        variant: "success",
+        link: etherscanLink,
+      },
+    });
+  };
+
+  handleConfirmation = (confirmationNumber, receipt) => {
+    const etherscanLink = `https://${getNetwork(
+      this.state.networkId
+    )}.etherscan.io/tx/${receipt.transactionHash}`;
+    this.setState({
+      message: {
+        title: `Confirmed(${confirmationNumber}).`,
+        variant: "success",
+        link: etherscanLink,
+      },
+    });
+    this.clearMessageWithDelay();
+  };
+
+  handleError = () => {
+    this.setState({
+      message: {
+        title: `Transaction failed.`,
+        variant: "error",
+      },
+    });
+    this.clearMessageWithDelay();
+  };
+
+  handlePromise = async (result) => {
+    const { metamaskAddress, networkId, web3 } = this.state;
+    const etherscanLink = `https://${getNetwork(networkId)}.etherscan.io/tx/${
+      result.transactionHash
+    }`;
+    const contractBalance = result.events.CurrentBalance.returnValues.balance;
+    const metamaskBalance = await web3.eth.getBalance(metamaskAddress);
+    this.setState({
+      contractBalance,
+      metamaskBalance,
+      message: {
+        title: "Completed.",
+        variant: "success",
+        link: etherscanLink,
+      },
+    });
+    this.clearMessageWithDelay();
+  };
+
+  clearMessageWithDelay = (seconds = 10) => {
+    setTimeout(() => {
+      this.setState({ message: { title: "" } });
+    }, seconds * 1000);
+  };
+
   loadContract = async () => {
     const { metamaskAddress, contract } = this.state;
-
     try {
       const contractBalance = await contract.methods
         .getBalance(metamaskAddress)
@@ -98,7 +178,12 @@ class App extends Component {
       depositValue,
       depositToMyselfValue,
     } = this.state;
-
+    this.setState({
+      message: {
+        title: "Confirm wallet transaction.",
+        variant: "success",
+      },
+    });
     depositToMyselfValue
       ? contract.methods
           .depositEth(this.state.destinationAddress, depositToMyselfValue)
@@ -106,64 +191,46 @@ class App extends Component {
             from: metamaskAddress,
             value: sumWeiValues(depositValue, depositToMyselfValue, web3),
           })
-          .then(async (result) => {
-            const contractBalance =
-              result.events.CurrentBalance.returnValues.balance;
-            const metamaskBalance = await web3.eth.getBalance(metamaskAddress);
-            this.setState({ contractBalance, metamaskBalance });
-          })
+          .on("transactionHash", (hash) => this.handleTransactionHash(hash))
+          .on("confirmation", (confirmationNumber, receipt) =>
+            this.handleConfirmation(confirmationNumber, receipt)
+          )
+          .on("error", (err) => this.handleError(err))
+          .then((result) => this.handlePromise(result))
       : contract.methods
           .depositEth(this.state.destinationAddress)
           .send({
             from: metamaskAddress,
             value: depositValue,
           })
-          .then(async (result) => {
-            const contractBalance =
-              result.events.CurrentBalance.returnValues.balance;
-            const metamaskBalance = await web3.eth.getBalance(metamaskAddress);
-            this.setState({ contractBalance, metamaskBalance });
-          });
+          .on("transactionHash", (hash) => this.handleTransactionHash(hash))
+          .on("confirmation", (confirmationNumber, receipt) =>
+            this.handleConfirmation(confirmationNumber, receipt)
+          )
+          .on("error", (err) => this.handleError(err))
+          .then((result) => this.handlePromise(result));
   };
 
   withdrawEth = async (e) => {
-    e.preventDefault();
-
-    const { contract, web3, metamaskAddress, withdrawValue } = this.state;
-
+    const { contract, metamaskAddress, withdrawValue } = this.state;
+    this.setState({
+      message: {
+        title: "Confirm wallet transaction.",
+        variant: "success",
+      },
+    });
     contract.methods
       .withdrawEth(metamaskAddress, withdrawValue)
       .send({
         from: metamaskAddress,
       })
-      .on("transactionHash", (hash) => {
-        console.log(
-          `View Transaction on Ropsten Etherscan: https://ropsten.etherscan.io/tx/${hash}`
-        );
-      })
-      .on("receipt", async (receipt) => {
-        console.log(
-          `Transaction has been mined in block ${receipt.blockNumber}.`
-        );
-        const contractBalance =
-          receipt.events.CurrentBalance.returnValues.balance;
-        const metamaskBalance = await web3.eth.getBalance(metamaskAddress);
-        this.setState({ contractBalance, metamaskBalance });
-      })
-      .on("confirmation", (confirmationNumber, receipt) => {
-        console.log(`Transaction confirmed ${confirmationNumber}`);
-      })
-      .on("error", (err) => {
-        console.log("Withdraw eth arror:", err);
-      })
-      .then((result) => {
-        const contractBalance =
-          result.events.CurrentBalance.returnValues.balance;
-        this.setState({ contractBalance });
-        console.log(
-          `Transaction completed with returned value: ${contractBalance}`
-        );
-      });
+      .on("transactionHash", (hash) => this.handleTransactionHash(hash))
+      .on("receipt", (receipt) => this.handleReceipt(receipt))
+      .on("confirmation", (confirmationNumber, receipt) =>
+        this.handleConfirmation(confirmationNumber, receipt)
+      )
+      .on("error", (err) => this.handleError(err))
+      .then((result) => this.handlePromise(result));
   };
 
   updateDepositValue = (event) => {
@@ -233,6 +300,7 @@ class App extends Component {
         <Message
           title={this.state.message.title}
           variant={this.state.message.variant}
+          link={this.state.message.link}
         />
         <main className="main-container">
           <div className="main-container-box">
