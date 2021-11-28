@@ -1,0 +1,27 @@
+.message-container {
+  display: flex;
+  flex-flow: row-reverse;
+}
+
+.message-box {
+  width: fit-content;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin: 16px;
+  color: white;
+  display: flex;
+  align-items: center;
+}
+
+.title {
+  margin: 0;
+  padding: 0 4px;
+}
+
+.success {
+  border: 2px solid darkgreen;
+}
+
+.error {
+  border: 2px solid darkred;
+}
