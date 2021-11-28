@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import AnonymizerContract from "./contracts/Anonymizer.json";
 import getWeb3 from "./getWeb3";
-import logo from "./assets/images/eth.png";
 import Header from "./components/Header";
+import Message from "./components/Message";
+import logo from "./assets/images/eth.png";
+import getNetwork from "./helpers/networks";
 import { ethToWei, weiToEth, sumWeiValues } from "./helperFunctions";
 
 import "./App.css";
@@ -21,6 +23,11 @@ class App extends Component {
     isDepositing: true,
     withdrawValue: 0,
     destinationAddress: null,
+    networkId: 0,
+    message: {
+      title: "",
+      variant: "success",
+    },
   };
 
   componentDidMount = async () => {
@@ -50,8 +57,9 @@ class App extends Component {
           contract: instance,
           metamaskAddress: accounts[0],
           metamaskBalance,
+          networkId,
         },
-        this.runExample
+        this.loadContract
       );
     } catch (error) {
       // Catch any errors for any of the above operations.
@@ -62,17 +70,24 @@ class App extends Component {
     }
   };
 
-  runExample = async () => {
+  loadContract = async () => {
     const { metamaskAddress, contract } = this.state;
 
-    // Get the value from the contract to prove it worked.
-    const contractOwner = await contract.methods.owner().call();
-    const contractBalance = await contract.methods
-      .getBalance(metamaskAddress)
-      .call();
-
-    // Update state with the result.
-    this.setState({ contractOwner, contractBalance });
+    try {
+      const contractBalance = await contract.methods
+        .getBalance(metamaskAddress)
+        .call();
+      const contractOwner = await contract.methods.owner().call();
+      this.setState({ contractOwner, contractBalance });
+    } catch (error) {
+      this.setState({
+        message: {
+          title: `Switch to ${getNetwork(3)} or Localhost:8545`,
+          variant: "error",
+        },
+      });
+      console.error(error.message);
+    }
   };
 
   depositEth = async () => {
@@ -191,12 +206,18 @@ class App extends Component {
       contractOwner,
       metamaskAddress,
       metamaskBalance,
+      networkId,
       contractBalance,
       isDepositing,
     } = this.state;
 
     if (!web3) {
-      return <div>Loading Web3, accounts, and contract...</div>;
+      return (
+        <Message
+          title="Loading Web3, accounts, and contract..."
+          variant="error"
+        />
+      );
     }
 
     return (
@@ -205,7 +226,13 @@ class App extends Component {
           contractOwner={contractOwner}
           metamaskAddress={metamaskAddress}
           metamaskBalance={metamaskBalance}
+          networkId={networkId}
           web3={web3}
+        />
+
+        <Message
+          title={this.state.message.title}
+          variant={this.state.message.variant}
         />
         <main className="main-container">
           <div className="main-container-box">
@@ -249,6 +276,7 @@ class App extends Component {
                       type="text"
                       placeholder="0.0"
                       onChange={this.updateDepositValue}
+                      // TODO: load max value
                       // value={this.weiToEth(this.state.depositValue)}
                     />
                   </div>
@@ -295,6 +323,7 @@ class App extends Component {
                       type="text"
                       placeholder="0.0"
                       onChange={this.updateWithdrawValue}
+                      // TODO: load max value
                       // value={this.weiToEth(this.state.withdrawValue)}
                     />
                   </div>

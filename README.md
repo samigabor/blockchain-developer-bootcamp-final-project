@@ -67,6 +67,7 @@ The structure was generated running `truffle unbox react` and contains:
 - `npm install` - install client dependencies
 - `npm run start` - run the application locally
 - go to `http://localhost:3000` (if not automatically redirected)
+- use Ropsten network or import ganache-cli generated accounts into MetaMask
 
 ### Run smart contract tests:
 
@@ -93,14 +94,14 @@ TODO
 
 ## Public Ethereum account for certification NFT:
 
-`0x1C2b35F78987953519224B313960c086722BD9E4`
+`0xE6Cc9dFa4dD633c75c4015F02eAE456A7fC6e3D9`
 
 ---
 
 ## TODO features:
 
+- display error/success messages on front-end
 - refactor UI using react hooks
-- better integration with MetaMask. Update UI automatically update on MetaMask actions(account/netowork changes). As of now, after changing account/network on MetaMask a page refresh is needed
 - implement emergency stop functionality
 - implement upgradable contract functionality
 - optimize gas usage
