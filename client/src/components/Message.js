@@ -14,7 +14,7 @@ export default function Message({ title, variant, link }) {
           {link ? (
             <span>
               View details{" "}
-              <a href={link} target="_blank">
+              <a href={link} target="_blank" rel="noreferrer noopener">
                 here
               </a>
               .
