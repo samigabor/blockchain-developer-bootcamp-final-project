@@ -33,6 +33,7 @@ The structure was generated running `truffle unbox react` and contains:
 - `contracts`: contains the smart contract deployed to Ropsten
 - `migrations`: contains the migration files for deploying the contracts from the **contracts** directory
 - `test`: contins the test files for smart contracts
+- `.env` file where you need to add your own MNEMONIC and INFURA_API_KEY
 
 ---
 
@@ -56,7 +57,7 @@ The structure was generated running `truffle unbox react` and contains:
 - `npm install` - install the smart contract dependencies at root level
 - `ganache-cli -p 8545` - start a local ethereum blockchain and simulate full client behavior
 - `truffle compile` - compile smart contracts
-- `truffle migrate` - migrate the smart contracts locally (_--network development_ is optional)
+- `truffle migrate --network development --reset` - migrate the smart contracts locally
 
 ### Start the front-end:
 
@@ -85,7 +86,7 @@ The structure was generated running `truffle unbox react` and contains:
 
 ## Screencast walking through the project
 
-TODO
+https://www.youtube.com/watch?v=J3Ek4xc3mrU
 
 ---
 
@@ -97,6 +98,7 @@ TODO
 
 ## TODO features:
 
+- features development will continue on `develop` branch
 - refactor UI using react hooks
 - implement emergency stop functionality
 - implement upgradable contract functionality
