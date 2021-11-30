@@ -4,7 +4,7 @@ import getWeb3 from "./getWeb3";
 import Header from "./components/Header";
 import Message from "./components/Message";
 import logo from "./assets/images/eth.png";
-import getNetwork from "./helpers/networks";
+import getNetwork, { getEtherscanLink } from "./helpers/networks";
 import { ethToWei, weiToEth, sumWeiValues } from "./helpers/eth-conversions";
 
 import "./App.css";
@@ -72,9 +72,8 @@ class App extends Component {
   };
 
   handleTransactionHash = (hash) => {
-    const etherscanLink = `https://${getNetwork(
-      this.state.networkId
-    )}.etherscan.io/tx/${hash}`;
+    const { networkId } = this.state;
+    const etherscanLink = getEtherscanLink(hash, networkId);
     this.setState({
       message: {
         title: `Pending.`,
@@ -88,9 +87,7 @@ class App extends Component {
     const { web3, metamaskAddress, networkId } = this.state;
     const contractBalance = receipt.events.CurrentBalance.returnValues.balance;
     const metamaskBalance = await web3.eth.getBalance(metamaskAddress);
-    const etherscanLink = `https://${getNetwork(networkId)}.etherscan.io/tx/${
-      receipt.transactionHash
-    }`;
+    const etherscanLink = getEtherscanLink(receipt.transactionHash, networkId);
     this.setState({
       contractBalance,
       metamaskBalance,
@@ -114,9 +111,7 @@ class App extends Component {
 
   handlePromise = async (result) => {
     const { metamaskAddress, networkId, web3 } = this.state;
-    const etherscanLink = `https://${getNetwork(networkId)}.etherscan.io/tx/${
-      result.transactionHash
-    }`;
+    const etherscanLink = getEtherscanLink(result.transactionHash, networkId);
     const contractBalance = result.events.CurrentBalance.returnValues.balance;
     const metamaskBalance = await web3.eth.getBalance(metamaskAddress);
     this.setState({

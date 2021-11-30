@@ -25,3 +25,34 @@ export default function getNetwork(chainId) {
       return "Unknown Network";
   }
 }
+
+export function getEtherscanLink(hash, chainId) {
+  let network;
+
+  switch (chainId) {
+    case 0x1 || 1:
+      network = "";
+      break;
+
+    case 0x3 || 3:
+      network = "ropsten";
+      break;
+
+    case 0x4 || 4:
+      network = "rinkeby";
+      break;
+
+    case 0x5 || 5:
+      network = "goerli";
+      break;
+
+    case 0x2a || 242:
+      network = "kovan";
+      break;
+
+    default:
+      network = "localhost";
+  }
+
+  return `https://${network}.etherscan.io/tx/${hash}`;
+}
