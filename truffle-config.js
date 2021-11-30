@@ -1,12 +1,6 @@
+require("dotenv").config;
 const path = require("path");
 const HDWalletProvider = require("@truffle/hdwallet-provider");
-const fs = require("fs");
-const secrets = JSON.parse(
-  fs
-    .readFileSync("./secrets/.secrets.json")
-    .toString()
-    .trim()
-);
 
 module.exports = {
   // See <http://truffleframework.com/docs/advanced/configuration>
@@ -20,7 +14,10 @@ module.exports = {
     },
     ropsten: {
       provider: function() {
-        return new HDWalletProvider(secrets.mnemonic, secrets.infuraKey);
+        return new HDWalletProvider(
+          process.env.MNEMONIC,
+          `wss://ropsten.infura.io/ws/v3/${process.env.INFURA_API_KEY}`
+        );
       },
       network_id: "3",
     },
@@ -32,6 +29,6 @@ module.exports = {
   },
   plugins: ["truffle-plugin-verify"],
   api_keys: {
-    etherscan: secrets.etherscanKey,
+    etherscan: process.env.ETHERSCAN_API_KEY,
   },
 };

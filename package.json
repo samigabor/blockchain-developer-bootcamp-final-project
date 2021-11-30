@@ -23,5 +23,8 @@
   "devDependencies": {
     "@openzeppelin/contracts": "^4.3.3",
     "truffle-plugin-verify": "^0.5.18"
+  },
+  "dependencies": {
+    "dotenv": "^10.0.0"
   }
 }
