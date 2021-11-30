@@ -315,7 +315,7 @@ class App extends Component {
                     </div>
                     <input
                       className="input-field"
-                      type="text"
+                      type="number"
                       placeholder="0.0"
                       onChange={this.updateDepositValue}
                       // TODO: load max value
@@ -335,7 +335,7 @@ class App extends Component {
                     <p className="max-balance">Extra deposit (optional)</p>
                     <input
                       className="input-field"
-                      type="text"
+                      type="number"
                       placeholder="0.0"
                       onChange={this.updateDepositToMyselfValue}
                     />
@@ -362,7 +362,7 @@ class App extends Component {
                     </div>
                     <input
                       className="input-field"
-                      type="text"
+                      type="number"
                       placeholder="0.0"
                       onChange={this.updateWithdrawValue}
                       // TODO: load max value

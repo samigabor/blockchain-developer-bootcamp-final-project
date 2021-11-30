@@ -110,3 +110,8 @@
       padding-box,
     rgb(255, 255, 255);
 }
+
+/* Chrome arrows fix */
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
