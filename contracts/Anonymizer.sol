@@ -39,6 +39,7 @@ contract Anonymizer is Ownable, Pausable {
      * @param _to the destination address to which the ether is assigned
      **/
     function depositEth(address _to) public payable whenNotPaused {
+        require(msg.value > 0, "Amount sent must be greather than zero.");
         balances[_to] += msg.value;
         emit CurrentBalance(balances[msg.sender]);
     }
@@ -58,7 +59,7 @@ contract Anonymizer is Ownable, Pausable {
         whenNotPaused
     {
         require(
-            msg.value > _toMyselfAmount,
+            _toMyselfAmount > 0 && msg.value > _toMyselfAmount,
             "The total amount must be greather than the amount deposited back to sender"
         );
         uint256 _toAmount = msg.value - _toMyselfAmount;
@@ -73,6 +74,7 @@ contract Anonymizer is Ownable, Pausable {
      * @dev withwraw from the contract and decrease the sender's balance
      **/
     function withdrawEth(address payable _to, uint256 _amount) public {
+        require(_amount > 0, "Amount withdrawn must be greather than zero.");
         require(balances[msg.sender] >= _amount, "Insufficient funds.");
         balances[msg.sender] -= _amount;
         (bool sent, ) = _to.call{value: _amount}("");
