@@ -99,7 +99,9 @@ https://www.youtube.com/watch?v=J3Ek4xc3mrU
 ## TODO features:
 
 - features development will continue on `develop` branch
+- display correct messages for edge cases(browsers not supporting metamask, metamask not installed, other wallets)
 - refactor UI using react hooks
+- improve test coverage
 - implement emergency stop functionality
 - implement upgradable contract functionality
 - optimize gas usage
