@@ -1,4 +1,4 @@
-require("dotenv").config;
+require("dotenv").config();
 const path = require("path");
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 
@@ -13,7 +13,7 @@ module.exports = {
       network_id: "*", // Match any network id
     },
     ropsten: {
-      provider: function() {
+      provider: function () {
         return new HDWalletProvider(
           process.env.MNEMONIC,
           `wss://ropsten.infura.io/ws/v3/${process.env.INFURA_API_KEY}`
